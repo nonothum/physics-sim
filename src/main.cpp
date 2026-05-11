@@ -11,12 +11,22 @@ int main()
     );
     window.setFramerateLimit(120);
 
+    sf::RectangleShape bg(sf::Vector2f(WIN_W, WIN_H));
+    bg.setFillColor({128, 128, 128});
+
+
     while (window.isOpen()) {
         // ---- SFML 3 event loop (type-safe) ----------------------------
         while (const std::optional event = window.pollEvent()) {
             if (event->is<sf::Event::Closed>())
                 window.close();
         }
+
+        // ---- Render ---------------------------------------------------
+        window.clear();
+        window.draw(bg);
+
+        window.display();
     }
     return 0;
 }
