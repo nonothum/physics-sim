@@ -1,3 +1,4 @@
+#include "PhysicsWorld.h"
 #include <SFML/Graphics.hpp>
 #include <optional>
 
@@ -14,6 +15,10 @@ int main()
     sf::RectangleShape bg(sf::Vector2f(WIN_W, WIN_H));
     bg.setFillColor({128, 128, 128});
 
+    // ---- Physics world ------------------------------------------------
+    PhysicsWorld world;
+
+    world.addEntity({100, 50}, 50);
 
     while (window.isOpen()) {
         // ---- SFML 3 event loop (type-safe) ----------------------------
@@ -25,6 +30,8 @@ int main()
         // ---- Render ---------------------------------------------------
         window.clear();
         window.draw(bg);
+
+        world.drawAll(window);
 
         window.display();
     }
