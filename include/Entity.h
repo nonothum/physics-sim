@@ -8,9 +8,10 @@
 // -----------------------------------------------------------------------
 class Entity {
 public:
-    Entity(Vec2 pos, float radius, sf::Color color = sf::Color::White)
+    Entity(Vec2 pos, float radius, float mass, sf::Color color = sf::Color::White)
         : position(pos)
         , radius(radius)
+        , mass(mass)
         , color(color)
     {}
     
@@ -24,9 +25,14 @@ public:
         window.draw(shape);
     }
 
+    float getMass() const {
+        return mass;
+    }
+
 private:
     Vec2 position;
     float radius;
+    float radius, mass;
     sf::Color color;
 
 };

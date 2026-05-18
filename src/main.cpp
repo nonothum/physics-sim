@@ -18,7 +18,7 @@ int main()
     // ---- Physics world ------------------------------------------------
     PhysicsWorld world;
 
-    world.addEntity({100, 50}, 50);
+    world.addEntity({100, 50}, 50, 42);
 
     while (window.isOpen()) {
         // ---- SFML 3 event loop (type-safe) ----------------------------
