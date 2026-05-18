@@ -10,11 +10,25 @@ class Entity {
 public:
     Entity(Vec2 pos, float radius, float mass, sf::Color color = sf::Color::White)
         : position(pos)
+        , acceleration({0, 0})
+        , velocity({0, 0})
         , radius(radius)
         , mass(mass)
         , color(color)
     {}
-    
+
+    // Apply a force this frame (accumulates, cleared after integrate)
+    void applyForce(const Vec2& force) {
+        acceleration += force * (1.f / mass);
+    }
+
+    // Semi-implicit Euler integration
+    void integrate(float dt) {
+        velocity   += acceleration * dt;
+        position   += velocity     * dt;
+        acceleration = {0, 0};  // clear for next frame
+    }
+
     void draw(sf::RenderWindow& window) const {
         sf::CircleShape shape(radius);
         shape.setOrigin(sf::Vector2f(radius, radius));
@@ -32,6 +46,7 @@ public:
 private:
     Vec2 position;
     float radius;
+    Vec2 position, velocity, acceleration;
     float radius, mass;
     sf::Color color;
 

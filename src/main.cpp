@@ -4,6 +4,8 @@
 
 static constexpr unsigned  WIN_W = 900;
 static constexpr unsigned  WIN_H = 600;
+static constexpr float     FIXED_DT = 1.f / 60.f;   // 60 Hz physics
+static constexpr int       MAX_STEPS = 5;           // spiral-of-death guard
 
 int main()
 {
@@ -20,11 +22,28 @@ int main()
 
     world.addEntity({100, 50}, 50, 42);
 
+    // ---- Fixed-timestep bookkeeping -----------------------------------
+    sf::Clock clock;
+    float accumulator = 0.f;
+
     while (window.isOpen()) {
         // ---- SFML 3 event loop (type-safe) ----------------------------
         while (const std::optional event = window.pollEvent()) {
             if (event->is<sf::Event::Closed>())
                 window.close();
+        }
+
+        // ---- Physics update (fixed timestep) --------------------------
+        float frameTime = clock.restart().asSeconds();
+        if (frameTime > 0.25f)
+            frameTime = 0.25f;   // clamp huge deltas
+        accumulator += frameTime;
+
+        int steps = 0;
+        while (accumulator >= FIXED_DT && steps < MAX_STEPS) {
+            world.step(FIXED_DT);
+            accumulator -= FIXED_DT;
+            ++steps;
         }
 
         // ---- Render ---------------------------------------------------
