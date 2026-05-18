@@ -13,8 +13,6 @@
 class PhysicsWorld {
 public:
 
-    void addEntity(Vec2 pos, float radius, sf::Color color = sf::Color::White) {
-        entities.push_back(std::make_unique<Entity>(pos, radius, color));
     void addEntity(Vec2 pos, float radius, float mass, sf::Color color = sf::Color::White) {
         entities.push_back(std::make_unique<Entity>(pos, radius, mass, color));
     }

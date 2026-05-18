@@ -44,8 +44,6 @@ public:
     }
 
 private:
-    Vec2 position;
-    float radius;
     Vec2 position, velocity, acceleration;
     float radius, mass;
     sf::Color color;
