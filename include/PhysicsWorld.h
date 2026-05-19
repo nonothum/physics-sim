@@ -18,8 +18,9 @@ public:
     , worldH(h)
     {}
 
-    void addEntity(Vec2 pos, float radius, float mass, sf::Color color = sf::Color::White) {
+    Entity* addEntity(Vec2 pos, float radius, float mass, sf::Color color = sf::Color::White) {
         entities.push_back(std::make_unique<Entity>(pos, radius, mass, color));
+        return entities.back().get();
     }
 
     // Advance simulation by one fixed timestep dt (seconds)

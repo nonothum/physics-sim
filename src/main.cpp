@@ -20,7 +20,8 @@ int main()
     // ---- Physics world ------------------------------------------------
     PhysicsWorld world(WIN_W, WIN_H);
 
-    world.addEntity({100, 50}, 50, 42);
+    auto* e = world.addEntity({100, 50}, 50, 42);
+    e->setVelocity(Vec2(500, 0));
 
     // ---- Fixed-timestep bookkeeping -----------------------------------
     sf::Clock clock;
