@@ -15,6 +15,7 @@ public:
         , radius(radius)
         , mass(mass)
         , color(color)
+        , restitution(0.75f)
     {}
 
     // Apply a force this frame (accumulates, cleared after integrate)
@@ -47,6 +48,10 @@ public:
         return mass;
     }
 
+    float getRestitution() const {
+        return restitution;
+    }
+
     Vec2 getPosition() const {
         return position;
     }
@@ -66,6 +71,7 @@ public:
 private:
     Vec2 position, velocity, acceleration;
     float radius, mass;
+    float restitution; // coefficient of restitution (bounciness 0..1)
     sf::Color color;
 
 };

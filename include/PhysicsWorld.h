@@ -62,7 +62,7 @@ private:
         // Floor
         if (pos.y + r > worldH) {
             e.setPosition(Vec2(pos.x, worldH - r));
-            e.setVelocity(Vec2(vel.x, -std::abs(vel.y)));
+            e.setVelocity(Vec2(vel.x, -std::abs(vel.y) * e.getRestitution()));
         }
     }
 };
