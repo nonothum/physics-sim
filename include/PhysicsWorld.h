@@ -56,14 +56,14 @@ private:
     // Boundary constraint (AABB of circular body vs window edges)
     // ----------------------------------------------------------------
     void constrainToBounds(Entity& e) {
-        const float r = e.getRadius();
+        const float rad = e.getRadius();
         const Vec2 pos = e.getPosition();
         const Vec2 vel = e.getVelocity();
 
         // Floor
-        if (pos.y + r > worldH) {
-            e.setPosition(Vec2(pos.x, worldH - r));
             e.setVelocity(Vec2(vel.x, -std::abs(vel.y) * e.getRestitution()));
+        if (pos.y + rad > worldH) {
+            e.setPosition(Vec2(pos.x, worldH - rad));
         }
     }
 };
