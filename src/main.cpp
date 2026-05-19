@@ -18,7 +18,7 @@ int main()
     bg.setFillColor({128, 128, 128});
 
     // ---- Physics world ------------------------------------------------
-    PhysicsWorld world;
+    PhysicsWorld world(WIN_W, WIN_H);
 
     world.addEntity({100, 50}, 50, 42);
 

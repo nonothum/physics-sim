@@ -13,6 +13,11 @@
 class PhysicsWorld {
 public:
 
+    PhysicsWorld(float w, float h)
+    : worldW(w)
+    , worldH(h)
+    {}
+
     void addEntity(Vec2 pos, float radius, float mass, sf::Color color = sf::Color::White) {
         entities.push_back(std::make_unique<Entity>(pos, radius, mass, color));
     }
@@ -36,4 +41,8 @@ private:
     std::vector<std::unique_ptr<Entity>> entities;
 
     Vec2 gravity{0.f, 600.f};   // pixels/s² downward
+
+    // World boundaries
+    float worldW = 0.f;
+    float worldH = 0.f;
 };
