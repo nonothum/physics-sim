@@ -57,13 +57,26 @@ private:
     // ----------------------------------------------------------------
     void constrainToBounds(Entity& e) {
         const float rad = e.getRadius();
+        const float res = e.getRestitution();
         const Vec2 pos = e.getPosition();
         const Vec2 vel = e.getVelocity();
 
         // Floor
-            e.setVelocity(Vec2(vel.x, -std::abs(vel.y) * e.getRestitution()));
         if (pos.y + rad > worldH) {
             e.setPosition(Vec2(pos.x, worldH - rad));
+            e.setVelocity(Vec2(vel.x * 0.98f, -std::abs(vel.y) * res)); // mild horizontal friction
+        }
+
+        // Right wall
+        if (pos.x + rad > worldW) {
+            e.setPosition(Vec2(worldW - rad, pos.y));
+            e.setVelocity(Vec2(-std::abs(vel.x) * res, vel.y));
+        }
+
+        // Left wall
+        if (pos.x - rad < 0) {
+            e.setPosition(Vec2(rad, pos.y));
+            e.setVelocity(Vec2(std::abs(vel.x) * res, vel.y));
         }
     }
 };
