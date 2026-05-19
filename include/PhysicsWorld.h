@@ -28,6 +28,11 @@ public:
             e->applyForce(gravity * e->getMass());
             e->integrate(dt);
         }
+
+        for (auto& e : entities) {
+            assert(e && "PhysicsWorld contains a null Entity");
+            constrainToBounds(*e);
+        }
     }
 
     void drawAll(sf::RenderWindow& window) const {
@@ -45,4 +50,19 @@ private:
     // World boundaries
     float worldW = 0.f;
     float worldH = 0.f;
+
+    // ----------------------------------------------------------------
+    // Boundary constraint (AABB of circular body vs window edges)
+    // ----------------------------------------------------------------
+    void constrainToBounds(Entity& e) {
+        const float r = e.getRadius();
+        const Vec2 pos = e.getPosition();
+        const Vec2 vel = e.getVelocity();
+
+        // Floor
+        if (pos.y + r > worldH) {
+            e.setPosition(Vec2(pos.x, worldH - r));
+            e.setVelocity(Vec2(vel.x, -std::abs(vel.y)));
+        }
+    }
 };
