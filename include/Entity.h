@@ -39,8 +39,28 @@ public:
         window.draw(shape);
     }
 
+    float getRadius() const {
+        return radius;
+    }
+
     float getMass() const {
         return mass;
+    }
+
+    Vec2 getPosition() const {
+        return position;
+    }
+
+    void setPosition(Vec2 pos) {
+        position = pos;
+    }
+
+    Vec2 getVelocity() const {
+        return velocity;
+    }
+
+    void setVelocity(Vec2 vel) {
+        velocity = vel;
     }
 
 private:
