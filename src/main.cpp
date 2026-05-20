@@ -7,6 +7,8 @@ static constexpr unsigned  WIN_W = 900;
 static constexpr unsigned  WIN_H = 600;
 static constexpr float     FIXED_DT = 1.f / 60.f;   // 60 Hz physics
 static constexpr int       MAX_STEPS = 5;           // spiral-of-death guard
+static constexpr int       SPAWN_VEL = 350.f;       // initial horizontal kick
+
 // -----------------------------------------------------------------------
 //  Helpers
 // -----------------------------------------------------------------------
@@ -38,8 +40,21 @@ int main()
     // ---- Physics world ------------------------------------------------
     PhysicsWorld world(WIN_W, WIN_H);
 
-    auto* e = world.addEntity({100, 50}, 50, 42);
-    e->setVelocity(Vec2(500, 0));
+    auto spawnBall = [&world](float x, float y) {
+        float rad = 10.f + std::rand() % 20;
+        float mass = rad * 0.3f;
+
+        float kickVariance = 0.4f + (std::rand() % 60 / 100.f);
+        float vx = (std::rand() % 2 ? 1 : -1) * SPAWN_VEL * kickVariance;
+        float vy = -200.f - std::rand() % 200;
+
+        auto* e = world.addEntity({x, y}, rad, mass, randomColor());
+        e->setVelocity({vx, vy});
+    };
+
+    // Seed a few balls
+    for (int i = 0; i < 8; i++)
+        spawnBall(std::rand() % WIN_W, std::rand() % WIN_H);
 
     // ---- Fixed-timestep bookkeeping -----------------------------------
     sf::Clock clock;
