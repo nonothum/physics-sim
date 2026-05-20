@@ -1,11 +1,29 @@
 #include "PhysicsWorld.h"
 #include <SFML/Graphics.hpp>
+#include <iterator>
 #include <optional>
 
 static constexpr unsigned  WIN_W = 900;
 static constexpr unsigned  WIN_H = 600;
 static constexpr float     FIXED_DT = 1.f / 60.f;   // 60 Hz physics
 static constexpr int       MAX_STEPS = 5;           // spiral-of-death guard
+// -----------------------------------------------------------------------
+//  Helpers
+// -----------------------------------------------------------------------
+static sf::Color randomColor() {
+    // Bright varied RGB palette
+    static const sf::Color palette[] = {
+        {255, 99,  99},   // red
+        {255,165,  50},   // orange
+        {250,230,  60},   // yellow
+        { 80,220, 120},   // green
+        { 60,180,255},    // sky blue
+        {180, 90,255},    // violet
+        {255,110,200},    // pink
+        { 80,240,230},    // teal
+    };
+    return palette[std::rand() % std::size(palette)];
+}
 
 int main()
 {
