@@ -65,6 +65,10 @@ int main()
         while (const std::optional event = window.pollEvent()) {
             if (event->is<sf::Event::Closed>())
                 window.close();
+
+            if (const auto* mb = event->getIf<sf::Event::MouseButtonPressed>())
+                spawnBall(static_cast<float>(mb->position.x),
+                          static_cast<float>(mb->position.y));
         }
 
         // ---- Physics update (fixed timestep) --------------------------
