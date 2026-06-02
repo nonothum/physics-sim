@@ -82,6 +82,11 @@ int main()
             if (const auto* kp = event->getIf<sf::Event::KeyPressed>()) {
                 if (kp->code == sf::Keyboard::Key::Escape)
                     window.close();
+                if (kp->code == sf::Keyboard::Key::R) {
+                    world.clear();
+                    for (int i = 0; i < 8; ++i)
+                        spawnBall(std::rand() % WIN_W, std::rand() % WIN_H);
+                }
             }
 
             if (const auto* mb = event->getIf<sf::Event::MouseButtonPressed>())
@@ -112,7 +117,7 @@ int main()
         if (hasFont) {
             std::ostringstream oss;
             oss << "Bodies: " << world.getNumEntities()
-                << "  |  click to spawn | Esc = quit";
+                << "  |  click to spawn | R = reset | Esc = quit";
             hudText.setString(oss.str());
             window.draw(hudText);
         }

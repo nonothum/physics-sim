@@ -52,6 +52,10 @@ public:
         return entities.size();
     }
 
+    void clear() {
+        entities.clear();
+    }
+
 private:
     std::vector<std::unique_ptr<Entity>> entities;
 
