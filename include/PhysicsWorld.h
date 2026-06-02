@@ -30,6 +30,11 @@ public:
             e->integrate(dt);
         }
 
+        for (size_t i = 0; i < entities.size(); ++i) {
+            for (size_t j = i + 1; j < entities.size(); ++j)
+                resolveCircleCollision(*entities[i], *entities[j]);
+        }
+
         for (auto& e : entities) {
             assert(e && "PhysicsWorld contains a null Entity");
             constrainToBounds(*e);
@@ -77,6 +82,52 @@ private:
         if (pos.x - rad < 0) {
             e.setPosition(Vec2(rad, pos.y));
             e.setVelocity(Vec2(std::abs(vel.x) * res, vel.y));
+        }
+    }
+
+    void resolveCircleCollision(Entity& a, Entity& b) {
+        // Pythagorean theorem for distance
+        Vec2  delta = b.getPosition() - a.getPosition();
+        float distSq = delta.lengthSq();
+        float minDist = a.getRadius() + b.getRadius();
+
+        if (distSq >= minDist * minDist || distSq < 1e-6f)
+            return;
+
+        float dist = delta.length();
+        Vec2  normal = delta / dist;          // unit normal a→b
+
+        // Relative velocity along normal
+        Vec2 relVel = b.getVelocity() - a.getVelocity();
+        float velAlongNormal = relVel.dot(normal);
+
+        // Already separating - skip
+        if (velAlongNormal > 0.f)
+            return;
+
+        float invMassA = 1.f / a.getMass();
+        float invMassB = 1.f / b.getMass();
+        float invMassSum = invMassA + invMassB;
+        if (invMassSum < 1e-6f)
+            return;
+
+        float e = std::min(a.getRestitution(), b.getRestitution());
+
+        // Impulse scalar
+        float j = -(1.f + e) * velAlongNormal / invMassSum;
+
+        Vec2 impulse = normal * j;
+        a.setVelocity(a.getVelocity() - impulse * invMassA);
+        b.setVelocity(b.getVelocity() + impulse * invMassB);
+
+        // Positional correction (Baumgarte, 30% slop)
+        const float percent = 0.3f;
+        const float slop    = 0.5f;
+        float penetration   = minDist - dist;
+        if (penetration > slop) {
+            Vec2 correction = normal * ((penetration - slop) / invMassSum * percent);
+            a.setPosition(a.getPosition() - correction * invMassA);
+            b.setPosition(b.getPosition() + correction * invMassB);
         }
     }
 };
