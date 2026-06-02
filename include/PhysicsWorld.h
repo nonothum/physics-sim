@@ -48,6 +48,10 @@ public:
         }
     }
 
+    size_t getNumEntities() const {
+        return entities.size();
+    }
+
 private:
     std::vector<std::unique_ptr<Entity>> entities;
 
