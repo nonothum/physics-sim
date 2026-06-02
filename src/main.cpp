@@ -37,6 +37,19 @@ int main()
     sf::RectangleShape bg(sf::Vector2f(WIN_W, WIN_H));
     bg.setFillColor({0, 0, 0});
 
+    // Optional font for HUD - try common Windows/MSYS2 paths
+    sf::Font font;
+    bool hasFont = font.openFromFile("C:/Windows/Fonts/consola.ttf");
+    if (!hasFont)
+        hasFont = font.openFromFile("C:/msys64/mingw64/share/fonts/DejaVuSansMono.ttf");
+
+    sf::Text hudText(font);
+    if (hasFont) {
+        hudText.setCharacterSize(14);
+        hudText.setFillColor(sf::Color(220,220,220,200));
+        hudText.setPosition(sf::Vector2f(8.f, 8.f));
+    }
+
     // ---- Physics world ------------------------------------------------
     PhysicsWorld world(WIN_W, WIN_H);
 
@@ -89,6 +102,14 @@ int main()
         window.draw(bg);
 
         world.drawAll(window);
+
+        // HUD
+        if (hasFont) {
+            std::ostringstream oss;
+            oss << "Bodies: " << world.getNumEntities() << "  |  click to spawn";
+            hudText.setString(oss.str());
+            window.draw(hudText);
+        }
 
         window.display();
     }
