@@ -79,6 +79,11 @@ int main()
             if (event->is<sf::Event::Closed>())
                 window.close();
 
+            if (const auto* kp = event->getIf<sf::Event::KeyPressed>()) {
+                if (kp->code == sf::Keyboard::Key::Escape)
+                    window.close();
+            }
+
             if (const auto* mb = event->getIf<sf::Event::MouseButtonPressed>())
                 spawnBall(static_cast<float>(mb->position.x),
                           static_cast<float>(mb->position.y));
@@ -106,7 +111,8 @@ int main()
         // HUD
         if (hasFont) {
             std::ostringstream oss;
-            oss << "Bodies: " << world.getNumEntities() << "  |  click to spawn";
+            oss << "Bodies: " << world.getNumEntities()
+                << "  |  click to spawn | Esc = quit";
             hudText.setString(oss.str());
             window.draw(hudText);
         }
