@@ -35,7 +35,7 @@ int main()
     window.setFramerateLimit(120);
 
     sf::RectangleShape bg(sf::Vector2f(WIN_W, WIN_H));
-    bg.setFillColor({128, 128, 128});
+    bg.setFillColor({0, 0, 0});
 
     // ---- Physics world ------------------------------------------------
     PhysicsWorld world(WIN_W, WIN_H);
