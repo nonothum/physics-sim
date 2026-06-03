@@ -2,6 +2,8 @@
 
 A real-time 2D rigid-body physics engine written in C++ using SFML for rendering. Demonstrates particle simulation with circle–circle collision detection, impulse-based collision resolution, and a fixed-timestep game loop.
 
+![demo](physics-sim.gif)
+
 ---
 
 ## Features
